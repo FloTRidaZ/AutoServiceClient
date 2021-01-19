@@ -7,11 +7,17 @@ using System.Threading.Tasks;
 
 namespace AutoServiceClient.ru.kso.autoservice.sort
 {
-    public class ServicePriceSorting : IServiceSorting
+    public sealed class ServicePriceSorting : IServiceSorting
     {
         public void Sort(ICollection<Service> collection)
         {
-            IEnumerator<Service> enumerator = collection.GetEnumerator();
+            
         }
+
+        public void Reverse(ICollection<Service> collection)
+        {
+            
+        }
+
     }
 }

@@ -140,9 +140,15 @@
     <Compile Include="ru\kso\autoservice\page\servicepage\ServicePage.xaml.cs">
       <DependentUpon>ServicePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ru\kso\autoservice\sort\FullyDiscountFilter.cs" />
+    <Compile Include="ru\kso\autoservice\sort\HightDiscountFilter.cs" />
+    <Compile Include="ru\kso\autoservice\sort\LowDiscountFilter.cs" />
     <Compile Include="ru\kso\autoservice\sort\IClientSorting.cs" />
     <Compile Include="ru\kso\autoservice\sort\IServiceSorting.cs" />
+    <Compile Include="ru\kso\autoservice\sort\MediumDiscountFilter.cs" />
+    <Compile Include="ru\kso\autoservice\sort\RowFilter.cs" />
     <Compile Include="ru\kso\autoservice\sort\ServicePriceSorting.cs" />
+    <Compile Include="ru\kso\autoservice\sort\SmallDiscountFilter.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -150,6 +156,9 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\icons\ic_btn_next_page.png" />
+    <Content Include="Assets\icons\ic_btn_previous_page.png" />
+    <Content Include="Assets\icons\ic_sorting_inversion.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

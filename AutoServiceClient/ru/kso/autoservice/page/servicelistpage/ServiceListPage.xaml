@@ -9,6 +9,10 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <StackPanel>
+            <ListView x:Name="_serviceListView">
 
+            </ListView>
+        </StackPanel>
     </Grid>
 </Page>

@@ -7,10 +7,16 @@ using System.Threading.Tasks;
 
 namespace AutoServiceClient.ru.kso.autoservice.sort
 {
-    internal interface IServiceSorting
+    public sealed class SmallDiscountFilter : IServiceSorting
     {
-        void Sort(ICollection<Service> collection);
+        public void Reverse(ICollection<Service> collection)
+        {
 
-        void Reverse(ICollection<Service> collection);
+        }
+
+        public void Sort(ICollection<Service> collection)
+        {
+
+        }
     }
 }

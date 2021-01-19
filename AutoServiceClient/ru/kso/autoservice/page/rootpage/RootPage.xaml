@@ -9,13 +9,115 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <StackPanel>
-            <RelativePanel>
-                
-            </RelativePanel>
-            <Frame>
-                
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.1*"/>
+            <RowDefinition Height="0.8*"/>
+            <RowDefinition Height="0.1*"/>
+        </Grid.RowDefinitions>
+        <RelativePanel
+            Grid.Row="0">
+            <AutoSuggestBox
+                Name="_searchLine"
+                RelativePanel.AlignLeftWithPanel="True"
+                RelativePanel.AlignVerticalCenterWithPanel="True"
+                QueryIcon="Find"
+                PlaceholderText="Поиск"
+                Margin="20, 0, 0, 0"
+                Width="200"
+                TextChanged="SearchLineTextChanged">
+                <AutoSuggestBox.Header>
+                    <TextBlock
+                        Text="Выберите услугу"
+                            />
+                </AutoSuggestBox.Header>
+            </AutoSuggestBox>
+            <ComboBox
+                x:Name="_sortingComboBox"
+                RelativePanel.RightOf="_searchLine"
+                RelativePanel.AlignBottomWith="_searchLine"
+                Header="Сортировка"
+                Margin="20, 0, 0, 0"
+                Width="200"
+                Loaded="SortingComboBoxLoaded"
+                SelectionChanged="SortingComboBoxSelectionChanged">
+            </ComboBox>
+            <Button
+                x:Name="_btnInverse"
+                RelativePanel.RightOf="_sortingComboBox"
+                RelativePanel.AlignBottomWith="_sortingComboBox"
+                Background="White"
+                Click="BtnInverseClick"
+                Width="40"
+                Height="40">
+                <Image 
+                    Source="ms-appx:///Assets/icons/ic_sorting_inversion.png"/>
+            </Button>
+            <ComboBox
+                x:Name="_filterComboBox"
+                RelativePanel.AlignBottomWith="_sortingComboBox"
+                RelativePanel.RightOf="_btnInverse"
+                Header="Фильтры"
+                Margin="20, 0, 0, 0"
+                Width="200"
+                Loaded="FilterComboBoxLoaded"
+                SelectionChanged="FilterComboBoxSelectionChanged">
+            </ComboBox>
+            <ComboBox
+                x:Name="_userTypeComboBox"
+                RelativePanel.AlignRightWithPanel="True"
+                RelativePanel.AlignBottomWith="_sortingComboBox"
+                Header="Режим"
+                Margin="0, 0, 20, 0"
+                Width="200"
+                Loaded="UserTypeComboBoxLoaded"
+                SelectionChanged="UserTypeComboBoxSelectionChanged">
+            </ComboBox>
+        </RelativePanel>
+        <ScrollViewer
+            Grid.Row="1"
+            VerticalScrollBarVisibility="Auto">
+            <Frame
+                x:Name="_contentFrame"
+                Loaded="ContentFrameLoaded">
             </Frame>
-        </StackPanel>
+        </ScrollViewer>
+        <RelativePanel
+                Grid.Row="2">
+            <TextBlock
+                Text="hreherhejh"
+                x:Name="_pageTextBlock"
+                RelativePanel.AlignLeftWithPanel="True"
+                RelativePanel.AlignVerticalCenterWithPanel="True"
+                Margin="20, 0, 0, 0"/>
+            <Button
+                x:Name="_btnPreviousPage"
+                RelativePanel.AlignVerticalCenterWith="_pageTextBlock"
+                RelativePanel.RightOf="_pageTextBlock"
+                Width="40"
+                Height="40"
+                Click="BtnPreviousPageClick"
+                Margin="20, 0, 0, 0"
+                Background="White">
+                <Image
+                    Source="ms-appx:///Assets/icons/ic_btn_previous_page.png"/>
+            </Button>
+            <Button
+                x:Name="_btnNextPage"
+                Width="40"
+                Height="40"
+                RelativePanel.AlignVerticalCenterWith="_pageTextBlock"
+                RelativePanel.RightOf="_btnPreviousPage"
+                Click="BtnNextPageClick"
+                Background="White">
+                <Image
+                    Source="ms-appx:///Assets/icons/ic_btn_next_page.png"/>
+            </Button>
+            <TextBlock
+                Text="hreherhejh"
+                x:Name="_tuplesTextBlock"
+                RelativePanel.AlignRightWithPanel="True"
+                RelativePanel.AlignVerticalCenterWithPanel="True"
+                Margin="0, 0, 20, 0"/>
+        </RelativePanel>
     </Grid>
 </Page>
