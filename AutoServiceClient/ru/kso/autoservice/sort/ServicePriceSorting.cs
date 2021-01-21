@@ -10,7 +10,7 @@ namespace AutoServiceClient.ru.kso.autoservice.sort
 {
     public sealed class ServicePriceSorting : IServiceSorting
     {
-        ServiceCollection _collection;
+        private readonly ServiceCollection _collection;
 
         public ServicePriceSorting()
         {
@@ -36,7 +36,19 @@ namespace AutoServiceClient.ru.kso.autoservice.sort
 
         public void Reverse()
         {
-            
+            for (int outIndex = _collection.Services.Count - 1; outIndex >= 1; outIndex--)
+            {
+                for (int index = 0; index < outIndex; index++)
+                {
+                    Service current = _collection.Services[index];
+                    Service next = _collection.Services[index + 1];
+                    if (current.Cost < next.Cost)
+                    {
+                        _collection.Services[index] = next;
+                        _collection.Services[index + 1] = current;
+                    }
+                }
+            }
         }
 
     }

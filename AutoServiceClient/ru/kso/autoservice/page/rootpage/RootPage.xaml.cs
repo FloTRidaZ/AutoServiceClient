@@ -1,25 +1,11 @@
 ﻿using AutoServiceClient.ru.kso.autoservice.database.collection;
-using AutoServiceClient.ru.kso.autoservice.database.datatype;
 using AutoServiceClient.ru.kso.autoservice.page.managerpage;
-using AutoServiceClient.ru.kso.autoservice.page.orderpage;
 using AutoServiceClient.ru.kso.autoservice.page.servicelistpage;
 using AutoServiceClient.ru.kso.autoservice.sort;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -34,6 +20,7 @@ namespace AutoServiceClient.ru.kso.autoservice.page.rootpage
         private readonly List<(ComboBoxItem comboBoxItem, Type page)> _comboUserTypeItems;
         private readonly List<(ComboBoxItem comboBoxItem, IServiceSorting sorting)> _comboFilterItems;
         private readonly ServiceCollection _serviceCollection;
+        private readonly double _pageCount;
 
         public RootPage()
         {
@@ -42,7 +29,19 @@ namespace AutoServiceClient.ru.kso.autoservice.page.rootpage
             _comboUserTypeItems = new List<(ComboBoxItem comboBoxItem, Type page)>();
             _comboFilterItems = new List<(ComboBoxItem comboBoxItem, IServiceSorting sorting)>();
             _serviceCollection = ServiceCollection.GetInstance();
+            _serviceCollection.FetchNextPage();
             CreateComboBoxItems();
+            _pageCount = _serviceCollection.PageCount;
+            double mod = _pageCount % 1;
+            if (mod != 0)
+            {
+                _pageCount++;
+                _pageCount -= mod;
+            }
+            string pageTextData = string.Format("Страница {0} из {1}", _serviceCollection.CurrentPage, _pageCount);
+            _pageTextBlock.Text = pageTextData;
+            string tupleTextData = string.Format("Показано {0} из {1} услуг", _serviceCollection.Start - 1, _serviceCollection.Size);
+            _tuplesTextBlock.Text = tupleTextData;
         }
 
         private void CreateComboBoxItems()
@@ -92,24 +91,12 @@ namespace AutoServiceClient.ru.kso.autoservice.page.rootpage
             {
                 Content = "По цене",
             };
-            itemPrice.Loaded += ItemPriceLoaded;
             _comboSortItems.Add((itemPrice, new ServicePriceSorting()));
         }
 
-        private void ItemPriceLoaded(object sender, RoutedEventArgs e)
-        {
-            IServiceSorting sorting = _comboSortItems.Find(item => item.comboBoxItem.Equals(sender as ComboBox)).sorting;
-            if (sorting == null)
-            {
-                return;
-            }
-            sorting.Sort();
-            ObservableCollection<Service> temp = _serviceCollection.Services;
-        }
 
         private void CreateUserItems()
         {
-            List<ComboBoxItem> items = new List<ComboBoxItem>();
             ComboBoxItem itemClient = new ComboBoxItem
             {
                 Content = "Клиент"
@@ -122,11 +109,6 @@ namespace AutoServiceClient.ru.kso.autoservice.page.rootpage
             _comboUserTypeItems.Add((itemManager, typeof(ManagerPage)));
         }
 
-        private void ContentFrameLoaded(object sender, RoutedEventArgs e)
-        {
-            _contentFrame.Navigate(typeof(ServiceListPage));
-        }
-
         private void SortingComboBoxLoaded(object sender, RoutedEventArgs e)
         {
             List<ComboBoxItem> items = new List<ComboBoxItem>();
@@ -135,7 +117,6 @@ namespace AutoServiceClient.ru.kso.autoservice.page.rootpage
                 items.Add(comboBoxItem);
             }
             _sortingComboBox.ItemsSource = items;
-            _sortingComboBox.SelectedItem = items[0];
         }
 
         private void SortingComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -156,15 +137,16 @@ namespace AutoServiceClient.ru.kso.autoservice.page.rootpage
 
         private void UserTypeComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            /*
-            ComboBoxItem current = _userTypeComboBox.SelectedItem as ComboBoxItem;
+            if (!(_userTypeComboBox.SelectedItem is ComboBoxItem current))
+            {
+                return;
+            }
             Type page = _comboUserTypeItems.Find(item => item.comboBoxItem.Equals(current)).page;
             if (page == null)
             {
                 return;
             }
             _contentFrame.Navigate(page);
-            */
         }
 
         private void SearchLineTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
@@ -180,7 +162,6 @@ namespace AutoServiceClient.ru.kso.autoservice.page.rootpage
                 items.Add(comboBoxItem);
             }
             _filterComboBox.ItemsSource = items;
-            _filterComboBox.SelectedItem = items[0];
         }
 
         private void FilterComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -190,7 +171,10 @@ namespace AutoServiceClient.ru.kso.autoservice.page.rootpage
 
         private void Sort(ComboBox comboBox, List<(ComboBoxItem comboBoxItem, IServiceSorting sorting)> comboItems)
         {
-            ComboBoxItem current = comboBox.SelectedItem as ComboBoxItem;
+            if (!(comboBox.SelectedItem is ComboBoxItem current))
+            {
+                return;
+            }
             IServiceSorting sorting = comboItems.Find(item => item.comboBoxItem.Equals(current)).sorting;
             if (sorting == null)
             {
@@ -199,25 +183,53 @@ namespace AutoServiceClient.ru.kso.autoservice.page.rootpage
             sorting.Sort();
         }
 
-        private void BtnNextPageClick(object sender, RoutedEventArgs e)
+        private void Reverse(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        private void BtnInverseClick(object sender, RoutedEventArgs e)
-        {
-            ComboBoxItem current = _sortingComboBox.SelectedItem as ComboBoxItem;
+            if (!(_sortingComboBox.SelectedItem is ComboBoxItem current))
+            {
+                return;
+            }
             IServiceSorting sorting = _comboSortItems.Find(item => item.comboBoxItem.Equals(current)).sorting;
             if (sorting == null)
             {
                 return;
             }
             sorting.Reverse();
+            _btnInverse.Click += Resort;
+            _btnInverse.Click -= Reverse;
+        }
+
+        private void Resort(object sender, RoutedEventArgs e)
+        {
+            Sort(_sortingComboBox, _comboSortItems);
+            _btnInverse.Click += Reverse;
+            _btnInverse.Click -= Resort;
         }
 
         private void BtnPreviousPageClick(object sender, RoutedEventArgs e)
         {
+            _serviceCollection.FetchPreviousPage();
+            string pageTextData = string.Format("Страница {0} из {1}", _serviceCollection.CurrentPage, _pageCount);
+            _pageTextBlock.Text = pageTextData;
+            string tupleTextData = string.Format("Показано {0} из {1} услуг", _serviceCollection.Start - 1, _serviceCollection.Size);
+            _tuplesTextBlock.Text = tupleTextData;
+            Sort(_sortingComboBox, _comboSortItems);
+        }
 
+        private void BtnNextPageClick(object sender, RoutedEventArgs e)
+        {
+            _serviceCollection.FetchNextPage();
+            string pageTextData = string.Format("Страница {0} из {1}", _serviceCollection.CurrentPage, _pageCount);
+            _pageTextBlock.Text = pageTextData;
+            string tupleTextData = string.Format("Показано {0} из {1} услуг", _serviceCollection.Start - 1, _serviceCollection.Size);
+            _tuplesTextBlock.Text = tupleTextData;
+            Sort(_sortingComboBox, _comboSortItems);
+        }
+
+
+        private void BtnInverseLoaded(object sender, RoutedEventArgs e)
+        {
+            _btnInverse.Click += Reverse;
         }
     }
 }

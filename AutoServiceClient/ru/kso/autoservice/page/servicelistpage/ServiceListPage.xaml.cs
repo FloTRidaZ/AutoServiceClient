@@ -1,4 +1,5 @@
-﻿using AutoServiceClient.ru.kso.autoservice.database.connector;
+﻿using AutoServiceClient.ru.kso.autoservice.database.collection;
+using AutoServiceClient.ru.kso.autoservice.database.connector;
 using AutoServiceClient.ru.kso.autoservice.database.datatype;
 using System;
 using System.Collections.Generic;
@@ -26,11 +27,13 @@ namespace AutoServiceClient.ru.kso.autoservice.page.servicelistpage
     public sealed partial class ServiceListPage : Page
     {
         private readonly ObservableCollection<Service> _services;
+        private readonly ServiceCollection _serviceCollection;
 
         public ServiceListPage()
         {
             this.InitializeComponent();
-            _services = DBConnector.GetServices();
+            _serviceCollection = ServiceCollection.GetInstance();
+            _services = _serviceCollection.Services;
         }
 
         private void ServicesGridViewItemClick(object sender, ItemClickEventArgs e)
@@ -38,15 +41,23 @@ namespace AutoServiceClient.ru.kso.autoservice.page.servicelistpage
 
         }
 
-        private void CostTextBlockLoaded(object sender, RoutedEventArgs e)
+        private void СostTextBlockDataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
             TextBlock cost = sender as TextBlock;
+            if (cost.Text.Contains("Цена"))
+            {
+                return;
+            }
             cost.Text = string.Format("Цена: {0} руб", cost.Text);
         }
 
-        private void DurationTextBlockLoaded(object sender, RoutedEventArgs e)
+        private void ВurationTextBlockDataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
             TextBlock duration = sender as TextBlock;
+            if (duration.Text.Contains("Продолжительность"))
+            {
+                return;
+            }
             duration.Text = string.Format("Продолжительность: {0} ч.", duration.Text);
         }
     }

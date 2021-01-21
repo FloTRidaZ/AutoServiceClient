@@ -31,13 +31,13 @@
                             TextTrimming="CharacterEllipsis"
                             Text="{x:Bind Title}"/>
                         <TextBlock
-                            Loaded="CostTextBlockLoaded"
+                            DataContextChanged="СostTextBlockDataContextChanged"
                             x:Name="_costTextBlock"
                             MaxLines="1"
                             TextTrimming="CharacterEllipsis"
                             Text="{x:Bind Cost}"/>
                         <TextBlock
-                            Loaded="DurationTextBlockLoaded"
+                            DataContextChanged="ВurationTextBlockDataContextChanged"
                             x:Name="_durationTextBlock"
                             MaxLines="1"
                             TextTrimming="CharacterEllipsis"

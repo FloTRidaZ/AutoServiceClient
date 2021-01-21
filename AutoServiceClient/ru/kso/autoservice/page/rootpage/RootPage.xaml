@@ -8,14 +8,17 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+    <Grid 
+        Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="0.1*"/>
             <RowDefinition Height="0.8*"/>
             <RowDefinition Height="0.1*"/>
         </Grid.RowDefinitions>
         <RelativePanel
-            Grid.Row="0">
+            Grid.Row="0"
+            BorderThickness="0, 0, 0, 1"
+            BorderBrush="Black">
             <AutoSuggestBox
                 Name="_searchLine"
                 RelativePanel.AlignLeftWithPanel="True"
@@ -39,16 +42,17 @@
                 Margin="20, 0, 0, 0"
                 Width="200"
                 Loaded="SortingComboBoxLoaded"
-                SelectionChanged="SortingComboBoxSelectionChanged">
+                SelectionChanged="SortingComboBoxSelectionChanged"
+                PlaceholderText="Выберите сортировку">
             </ComboBox>
             <Button
                 x:Name="_btnInverse"
                 RelativePanel.RightOf="_sortingComboBox"
                 RelativePanel.AlignBottomWith="_sortingComboBox"
-                Background="White"
-                Click="BtnInverseClick"
                 Width="40"
-                Height="40">
+                Height="40"
+                Background="White"
+                Loaded="BtnInverseLoaded">
                 <Image 
                     Source="ms-appx:///Assets/icons/ic_sorting_inversion.png"/>
             </Button>
@@ -60,7 +64,8 @@
                 Margin="20, 0, 0, 0"
                 Width="200"
                 Loaded="FilterComboBoxLoaded"
-                SelectionChanged="FilterComboBoxSelectionChanged">
+                SelectionChanged="FilterComboBoxSelectionChanged"
+                PlaceholderText="Выберите фильтр">
             </ComboBox>
             <ComboBox
                 x:Name="_userTypeComboBox"
@@ -77,14 +82,14 @@
             Grid.Row="1"
             VerticalScrollBarVisibility="Auto">
             <Frame
-                x:Name="_contentFrame"
-                Loaded="ContentFrameLoaded">
+                x:Name="_contentFrame">
             </Frame>
         </ScrollViewer>
         <RelativePanel
-                Grid.Row="2">
+                Grid.Row="2"
+                BorderThickness="0, 1, 0, 0"
+                BorderBrush="Black">
             <TextBlock
-                Text="hreherhejh"
                 x:Name="_pageTextBlock"
                 RelativePanel.AlignLeftWithPanel="True"
                 RelativePanel.AlignVerticalCenterWithPanel="True"
@@ -113,7 +118,6 @@
                     Source="ms-appx:///Assets/icons/ic_btn_next_page.png"/>
             </Button>
             <TextBlock
-                Text="hreherhejh"
                 x:Name="_tuplesTextBlock"
                 RelativePanel.AlignRightWithPanel="True"
                 RelativePanel.AlignVerticalCenterWithPanel="True"
