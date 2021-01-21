@@ -5,14 +5,46 @@
     xmlns:local="using:AutoServiceClient.ru.kso.autoservice.page.servicelistpage"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:datatype="using:AutoServiceClient.ru.kso.autoservice.database.datatype"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <StackPanel>
-            <ListView x:Name="_serviceListView">
-
-            </ListView>
-        </StackPanel>
+        <GridView
+            x:Name="_servicesGridView"
+            ItemsSource="{x:Bind _services}"
+            SelectionMode="None"
+            ItemClick="ServicesGridViewItemClick"
+            IsItemClickEnabled="True"
+            Padding="20, 20, 20, 20">
+            <GridView.ItemTemplate>
+                <DataTemplate x:DataType="datatype:Service">
+                    <StackPanel Width="180" Height="160">
+                        <Image
+                            x:Name="_servicePhoto"
+                            Width="100"
+                            Height="100"
+                            Source="{x:Bind Bitmap}"/>
+                        <TextBlock
+                            x:Name="_titleTextBlock"
+                            MaxLines="1"
+                            TextTrimming="CharacterEllipsis"
+                            Text="{x:Bind Title}"/>
+                        <TextBlock
+                            Loaded="CostTextBlockLoaded"
+                            x:Name="_costTextBlock"
+                            MaxLines="1"
+                            TextTrimming="CharacterEllipsis"
+                            Text="{x:Bind Cost}"/>
+                        <TextBlock
+                            Loaded="DurationTextBlockLoaded"
+                            x:Name="_durationTextBlock"
+                            MaxLines="1"
+                            TextTrimming="CharacterEllipsis"
+                            Text="{x:Bind Duration}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+        </GridView>
     </Grid>
 </Page>

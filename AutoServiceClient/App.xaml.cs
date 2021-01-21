@@ -1,4 +1,5 @@
-﻿using AutoServiceClient.ru.kso.autoservice.page.rootpage;
+﻿using AutoServiceClient.ru.kso.autoservice.database.collection;
+using AutoServiceClient.ru.kso.autoservice.page.rootpage;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,6 +28,7 @@ namespace AutoServiceClient
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            ServiceCollection.CreateInstance();
         }
 
         /// <summary>

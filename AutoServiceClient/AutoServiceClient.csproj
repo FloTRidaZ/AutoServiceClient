@@ -120,6 +120,8 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ru\kso\autoservice\database\collection\ServiceCollection.cs" />
+    <Compile Include="ru\kso\autoservice\database\connector\DBAttributes.cs" />
     <Compile Include="ru\kso\autoservice\database\connector\DBConnection.cs" />
     <Compile Include="ru\kso\autoservice\database\connector\DBConnector.cs" />
     <Compile Include="ru\kso\autoservice\database\connector\DBQuery.cs" />

@@ -1,9 +1,12 @@
-﻿using AutoServiceClient.ru.kso.autoservice.page.managerpage;
+﻿using AutoServiceClient.ru.kso.autoservice.database.collection;
+using AutoServiceClient.ru.kso.autoservice.database.datatype;
+using AutoServiceClient.ru.kso.autoservice.page.managerpage;
 using AutoServiceClient.ru.kso.autoservice.page.orderpage;
 using AutoServiceClient.ru.kso.autoservice.page.servicelistpage;
 using AutoServiceClient.ru.kso.autoservice.sort;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -28,15 +31,17 @@ namespace AutoServiceClient.ru.kso.autoservice.page.rootpage
     public sealed partial class RootPage : Page
     {
         private readonly List<(ComboBoxItem comboBoxItem, IServiceSorting sorting)> _comboSortItems;
-        private readonly List<(ComboBoxItem comboBoxItem, Page page)> _comboUserTypeItems;
+        private readonly List<(ComboBoxItem comboBoxItem, Type page)> _comboUserTypeItems;
         private readonly List<(ComboBoxItem comboBoxItem, IServiceSorting sorting)> _comboFilterItems;
+        private readonly ServiceCollection _serviceCollection;
 
         public RootPage()
         {
             this.InitializeComponent();
             _comboSortItems = new List<(ComboBoxItem, IServiceSorting)>();
-            _comboUserTypeItems = new List<(ComboBoxItem comboBoxItem, Page page)>();
+            _comboUserTypeItems = new List<(ComboBoxItem comboBoxItem, Type page)>();
             _comboFilterItems = new List<(ComboBoxItem comboBoxItem, IServiceSorting sorting)>();
+            _serviceCollection = ServiceCollection.GetInstance();
             CreateComboBoxItems();
         }
 
@@ -87,7 +92,19 @@ namespace AutoServiceClient.ru.kso.autoservice.page.rootpage
             {
                 Content = "По цене",
             };
+            itemPrice.Loaded += ItemPriceLoaded;
             _comboSortItems.Add((itemPrice, new ServicePriceSorting()));
+        }
+
+        private void ItemPriceLoaded(object sender, RoutedEventArgs e)
+        {
+            IServiceSorting sorting = _comboSortItems.Find(item => item.comboBoxItem.Equals(sender as ComboBox)).sorting;
+            if (sorting == null)
+            {
+                return;
+            }
+            sorting.Sort();
+            ObservableCollection<Service> temp = _serviceCollection.Services;
         }
 
         private void CreateUserItems()
@@ -101,13 +118,13 @@ namespace AutoServiceClient.ru.kso.autoservice.page.rootpage
             {
                 Content = "Управляющий"
             };
-            _comboUserTypeItems.Add((itemClient, new ServiceListPage()));
-            _comboUserTypeItems.Add((itemManager, new ManagerPage()));
+            _comboUserTypeItems.Add((itemClient, typeof(ServiceListPage)));
+            _comboUserTypeItems.Add((itemManager, typeof(ManagerPage)));
         }
 
         private void ContentFrameLoaded(object sender, RoutedEventArgs e)
         {
-            _contentFrame.Content = new ServiceListPage();
+            _contentFrame.Navigate(typeof(ServiceListPage));
         }
 
         private void SortingComboBoxLoaded(object sender, RoutedEventArgs e)
@@ -139,13 +156,15 @@ namespace AutoServiceClient.ru.kso.autoservice.page.rootpage
 
         private void UserTypeComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            /*
             ComboBoxItem current = _userTypeComboBox.SelectedItem as ComboBoxItem;
-            Page page = _comboUserTypeItems.Find(item => item.comboBoxItem.Equals(current)).page;
+            Type page = _comboUserTypeItems.Find(item => item.comboBoxItem.Equals(current)).page;
             if (page == null)
             {
                 return;
             }
-            _contentFrame.Content = page;
+            _contentFrame.Navigate(page);
+            */
         }
 
         private void SearchLineTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
@@ -177,7 +196,7 @@ namespace AutoServiceClient.ru.kso.autoservice.page.rootpage
             {
                 return;
             }
-            sorting.Sort(null);
+            sorting.Sort();
         }
 
         private void BtnNextPageClick(object sender, RoutedEventArgs e)
@@ -193,7 +212,7 @@ namespace AutoServiceClient.ru.kso.autoservice.page.rootpage
             {
                 return;
             }
-            sorting.Reverse(null);
+            sorting.Reverse();
         }
 
         private void BtnPreviousPageClick(object sender, RoutedEventArgs e)

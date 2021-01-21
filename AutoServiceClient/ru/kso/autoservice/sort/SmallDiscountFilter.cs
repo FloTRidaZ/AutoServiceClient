@@ -9,12 +9,12 @@ namespace AutoServiceClient.ru.kso.autoservice.sort
 {
     public sealed class SmallDiscountFilter : IServiceSorting
     {
-        public void Reverse(ICollection<Service> collection)
+        public void Reverse()
         {
 
         }
 
-        public void Sort(ICollection<Service> collection)
+        public void Sort()
         {
 
         }

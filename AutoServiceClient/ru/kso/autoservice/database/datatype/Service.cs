@@ -15,28 +15,23 @@ namespace AutoServiceClient.ru.kso.autoservice.database.datatype
         public int Id { get; set; }
         public string Title { get; set; }
         public int Cost { get; set; }
-        public int Duration { get; set; }
+        public float Duration { get; set; }
         public float Discount { get; set; }
-        public BitmapImage Bitmap
-        {
-            get
-            {
-                return Bitmap;
-            }
-        }
+        public BitmapImage Bitmap { get; set; }
 
-        public Service (int id, string title, int cost, int duration)
+        public Service(int id, string title, int cost, float duration)
         {
             Id = id;
             Title = title;
             Cost = cost;
             Duration = duration;
+            Bitmap = new BitmapImage();
         }
 
-        public async void SetImage(Stream stream)
+        public async void SetImageFromStream(Stream stream)
         {
             IRandomAccessStream thread = WindowsRuntimeStreamExtensions.AsRandomAccessStream(stream);
-            await Task.Run(() => Bitmap.SetSourceAsync(thread));
+            await Bitmap.SetSourceAsync(thread);
         }
     }
 }

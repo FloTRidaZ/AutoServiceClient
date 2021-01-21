@@ -9,11 +9,11 @@ namespace AutoServiceClient.ru.kso.autoservice.sort
 {
     public sealed class LowDiscountFilter : IServiceSorting
     {
-        public void Reverse(ICollection<Service> collection)
+        public void Reverse()
         {
         }
 
-        public void Sort(ICollection<Service> collection)
+        public void Sort()
         {
         }
     }

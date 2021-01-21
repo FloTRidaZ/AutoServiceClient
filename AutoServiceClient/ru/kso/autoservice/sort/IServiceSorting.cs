@@ -9,8 +9,8 @@ namespace AutoServiceClient.ru.kso.autoservice.sort
 {
     internal interface IServiceSorting
     {
-        void Sort(ICollection<Service> collection);
+        void Sort();
 
-        void Reverse(ICollection<Service> collection);
+        void Reverse();
     }
 }

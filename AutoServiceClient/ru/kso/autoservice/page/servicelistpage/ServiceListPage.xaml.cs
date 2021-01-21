@@ -25,9 +25,29 @@ namespace AutoServiceClient.ru.kso.autoservice.page.servicelistpage
     /// </summary>
     public sealed partial class ServiceListPage : Page
     {
+        private readonly ObservableCollection<Service> _services;
+
         public ServiceListPage()
         {
             this.InitializeComponent();
+            _services = DBConnector.GetServices();
+        }
+
+        private void ServicesGridViewItemClick(object sender, ItemClickEventArgs e)
+        {
+
+        }
+
+        private void CostTextBlockLoaded(object sender, RoutedEventArgs e)
+        {
+            TextBlock cost = sender as TextBlock;
+            cost.Text = string.Format("Цена: {0} руб", cost.Text);
+        }
+
+        private void DurationTextBlockLoaded(object sender, RoutedEventArgs e)
+        {
+            TextBlock duration = sender as TextBlock;
+            duration.Text = string.Format("Продолжительность: {0} ч.", duration.Text);
         }
     }
 }
