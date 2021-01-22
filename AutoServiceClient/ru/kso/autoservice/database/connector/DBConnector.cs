@@ -84,6 +84,7 @@ namespace AutoServiceClient.ru.kso.autoservice.database.connector
             Stream fileStream = reader.GetStream(DBAttributes.PHOTO_ATTR); 
             Service service = new Service(id, title, cost, duration);
             service.SetImageFromStream(fileStream);
+            service.Discount = (float) reader.GetDouble(DBAttributes.DISCOUNT_ATTR);
             services.Add(service);
         }
     }

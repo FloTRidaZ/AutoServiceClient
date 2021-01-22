@@ -1,23 +1,10 @@
 ﻿using AutoServiceClient.ru.kso.autoservice.constants;
 using AutoServiceClient.ru.kso.autoservice.database.collection;
-using AutoServiceClient.ru.kso.autoservice.database.connector;
 using AutoServiceClient.ru.kso.autoservice.database.datatype;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel.Resources;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
+using Windows.UI.Text;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -45,24 +32,64 @@ namespace AutoServiceClient.ru.kso.autoservice.page.servicelistpage
 
         }
 
-        private void СostTextBlockDataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+        private void ServicesGridViewContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
         {
-            TextBlock cost = sender as TextBlock;
-            if (cost.Text.Contains("Цена"))
+            if (args.Phase != 0)
             {
                 return;
             }
-            cost.Text = string.Format(_resourceLoader.GetString(ResourceKey.PRICE_KEY), cost.Text);
+            args.RegisterUpdateCallback(ShowCost);
         }
 
-        private void ВurationTextBlockDataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+        private void ShowCost(ListViewBase sender, ContainerContentChangingEventArgs args)
         {
-            TextBlock duration = sender as TextBlock;
-            if (duration.Text.Contains("Продолжительность"))
+            if (args.Phase != 1)
             {
                 return;
             }
-            duration.Text = string.Format(_resourceLoader.GetString(ResourceKey.DURATION_KEY), duration.Text);
+            StackPanel root = args.ItemContainer.ContentTemplateRoot as StackPanel;
+            TextBlock costTextBlock = root.Children[2] as TextBlock;
+            Service service = args.Item as Service;
+            costTextBlock.Text = string.Format(_resourceLoader.GetString(ResourceKey.PRICE_KEY), service.Cost);
+            costTextBlock.Opacity = 1;
+            args.RegisterUpdateCallback(ShowDuration);
+        }
+
+        private void ShowDuration(ListViewBase sender, ContainerContentChangingEventArgs args)
+        {
+            if (args.Phase != 2)
+            {
+                return;
+            }
+            StackPanel root = args.ItemContainer.ContentTemplateRoot as StackPanel;
+            TextBlock durationTextBlock = root.Children[3] as TextBlock;
+            Service service = args.Item as Service;
+            durationTextBlock.Text = string.Format(_resourceLoader.GetString(ResourceKey.DURATION_KEY), service.Duration);
+            durationTextBlock.Opacity = 1;
+            args.RegisterUpdateCallback(ShowDiscount);
+        }
+
+        private void ShowDiscount(ListViewBase sender, ContainerContentChangingEventArgs args)
+        {
+            if (args.Phase != 3)
+            {
+                return;
+            }
+            StackPanel root = args.ItemContainer.ContentTemplateRoot as StackPanel;
+            TextBlock costTextBlock = root.Children[2] as TextBlock;
+            TextBlock discountTextBlock = root.Children[4] as TextBlock;
+            Service service = args.Item as Service;
+            string discount;
+            if (service.Discount == 0)
+            {
+                discount = _resourceLoader.GetString(ResourceKey.NULL_DISCOUNT_KEY);
+            } else
+            {
+                discount = string.Format(_resourceLoader.GetString(ResourceKey.DISCOUNT_KEY), service.Discount * 100);
+            }
+            discountTextBlock.Text = discount;
+            discountTextBlock.Opacity = 1;
+            costTextBlock.TextDecorations = TextDecorations.Strikethrough;
         }
     }
 }

@@ -16,7 +16,8 @@
             SelectionMode="None"
             ItemClick="ServicesGridViewItemClick"
             IsItemClickEnabled="True"
-            Padding="20, 20, 20, 20">
+            Padding="20, 20, 20, 20"
+            ContainerContentChanging="ServicesGridViewContainerContentChanging">
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <ItemsWrapGrid
@@ -25,7 +26,7 @@
             </GridView.ItemsPanel>
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="datatype:Service">
-                    <StackPanel Width="180" Height="160">
+                    <StackPanel Width="180" Height="180">
                         <Image
                             x:Name="_servicePhoto"
                             Width="100"
@@ -37,17 +38,20 @@
                             TextTrimming="CharacterEllipsis"
                             Text="{x:Bind Title}"/>
                         <TextBlock
-                            DataContextChanged="СostTextBlockDataContextChanged"
                             x:Name="_costTextBlock"
                             MaxLines="1"
                             TextTrimming="CharacterEllipsis"
-                            Text="{x:Bind Cost}"/>
+                            Opacity="0"/>
                         <TextBlock
-                            DataContextChanged="ВurationTextBlockDataContextChanged"
                             x:Name="_durationTextBlock"
                             MaxLines="1"
                             TextTrimming="CharacterEllipsis"
-                            Text="{x:Bind Duration}"/>
+                            Opacity="0"/>
+                        <TextBlock
+                            x:Name="_discountTextBlock"
+                            MaxLines="1"
+                            TextTrimming="CharacterEllipsis"
+                            Opacity="0"/>
                     </StackPanel>
                 </DataTemplate>
             </GridView.ItemTemplate>

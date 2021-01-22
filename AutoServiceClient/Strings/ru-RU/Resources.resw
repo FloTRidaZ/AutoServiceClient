@@ -126,6 +126,9 @@
   <data name="CurrentTuples" xml:space="preserve">
     <value>Показано {0} из {1} услуг</value>
   </data>
+  <data name="Discount" xml:space="preserve">
+    <value>Скидка: {0} %</value>
+  </data>
   <data name="Duration" xml:space="preserve">
     <value>Продолжительность: {0} ч.</value>
   </data>
@@ -140,6 +143,9 @@
   </data>
   <data name="MediumFilter" xml:space="preserve">
     <value>От 15 до 30%</value>
+  </data>
+  <data name="NullDiscount" xml:space="preserve">
+    <value>Скидка: отсутствует</value>
   </data>
   <data name="Price" xml:space="preserve">
     <value>Цена: {0} руб</value>

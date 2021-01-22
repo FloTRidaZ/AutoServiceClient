@@ -19,7 +19,8 @@ namespace AutoServiceClient.ru.kso.autoservice.constants
         public const string DURATION_KEY = "Duration";
         public const string PRICE_KEY = "Price";
         public const string CURRENT_PAGE_KEY = "CurrentPage";
-
+        public const string DISCOUNT_KEY = "Discount";
+        public const string NULL_DISCOUNT_KEY = "NullDiscount";
         private ResourceKey()
         {
 
