@@ -1,0 +1,28 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AutoServiceClient.ru.kso.autoservice.constants
+{
+    public sealed class ResourceKey
+    {
+        public const string ALL_FILTER_KEY = "AllFilter";
+        public const string LOW_FILTER_KEY = "LowFilter";
+        public const string SMALL_FILTER_KEY = "SmallFilter";
+        public const string MEDIUM_FILTER_KEY = "MediumFilter";
+        public const string HIGHT_FILTER_KEY = "HightFilter";
+        public const string FULL_FILTER_KEY = "FullFilter";
+        public const string PRICE_FILTER_KEY = "PriceFilter";
+        public const string CURRENT_TUPLES_KEY = "CurrentTuples";
+        public const string DURATION_KEY = "Duration";
+        public const string PRICE_KEY = "Price";
+        public const string CURRENT_PAGE_KEY = "CurrentPage";
+
+        private ResourceKey()
+        {
+
+        }
+    }
+}

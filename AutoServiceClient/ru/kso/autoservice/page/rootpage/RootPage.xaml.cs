@@ -1,9 +1,11 @@
-﻿using AutoServiceClient.ru.kso.autoservice.database.collection;
+﻿using AutoServiceClient.ru.kso.autoservice.constants;
+using AutoServiceClient.ru.kso.autoservice.database.collection;
 using AutoServiceClient.ru.kso.autoservice.page.managerpage;
 using AutoServiceClient.ru.kso.autoservice.page.servicelistpage;
 using AutoServiceClient.ru.kso.autoservice.sort;
 using System;
 using System.Collections.Generic;
+using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -17,16 +19,16 @@ namespace AutoServiceClient.ru.kso.autoservice.page.rootpage
     public sealed partial class RootPage : Page
     {
         private readonly List<(ComboBoxItem comboBoxItem, IServiceSorting sorting)> _comboSortItems;
-        private readonly List<(ComboBoxItem comboBoxItem, Type page)> _comboUserTypeItems;
         private readonly List<(ComboBoxItem comboBoxItem, IServiceSorting sorting)> _comboFilterItems;
         private readonly ServiceCollection _serviceCollection;
         private readonly double _pageCount;
+        private readonly ResourceLoader _resourceLoader;
 
         public RootPage()
         {
             this.InitializeComponent();
+            _resourceLoader = ResourceLoader.GetForCurrentView();
             _comboSortItems = new List<(ComboBoxItem, IServiceSorting)>();
-            _comboUserTypeItems = new List<(ComboBoxItem comboBoxItem, Type page)>();
             _comboFilterItems = new List<(ComboBoxItem comboBoxItem, IServiceSorting sorting)>();
             _serviceCollection = ServiceCollection.GetInstance();
             _serviceCollection.FetchNextPage();
@@ -38,16 +40,15 @@ namespace AutoServiceClient.ru.kso.autoservice.page.rootpage
                 _pageCount++;
                 _pageCount -= mod;
             }
-            string pageTextData = string.Format("Страница {0} из {1}", _serviceCollection.CurrentPage, _pageCount);
+            string pageTextData = string.Format(_resourceLoader.GetString(ResourceKey.CURRENT_PAGE_KEY), _serviceCollection.CurrentPage, _pageCount);
             _pageTextBlock.Text = pageTextData;
-            string tupleTextData = string.Format("Показано {0} из {1} услуг", _serviceCollection.Start - 1, _serviceCollection.Size);
+            string tupleTextData = string.Format(_resourceLoader.GetString(ResourceKey.CURRENT_TUPLES_KEY), _serviceCollection.Start - 1, _serviceCollection.Size);
             _tuplesTextBlock.Text = tupleTextData;
         }
 
         private void CreateComboBoxItems()
         {
             CreateSortItems();
-            CreateUserItems();
             CreateFilterItems();
         }
 
@@ -55,27 +56,27 @@ namespace AutoServiceClient.ru.kso.autoservice.page.rootpage
         {
             ComboBoxItem itemAllFilter = new ComboBoxItem
             {
-                Content = "Все"
+                Content = _resourceLoader.GetString(ResourceKey.ALL_FILTER_KEY)
             };
             ComboBoxItem itemLowFilter = new ComboBoxItem
             {
-                Content = "От 0 до 5%"
+                Content = _resourceLoader.GetString(ResourceKey.LOW_FILTER_KEY)
             };
             ComboBoxItem itemSmallFilter = new ComboBoxItem
             {
-                Content = "От 5% до 15%"
+                Content = _resourceLoader.GetString(ResourceKey.SMALL_FILTER_KEY)
             };
             ComboBoxItem itemMediumFilter = new ComboBoxItem
             {
-                Content = "От 15% до 30%"
+                Content = _resourceLoader.GetString(ResourceKey.MEDIUM_FILTER_KEY)
             };
             ComboBoxItem itemHightFilter = new ComboBoxItem
             {
-                Content = "От 30% до 70%"
+                Content = _resourceLoader.GetString(ResourceKey.HIGHT_FILTER_KEY)
             };
             ComboBoxItem itemFullyFilter = new ComboBoxItem
             {
-                Content = "От 70% до 100%"
+                Content = _resourceLoader.GetString(ResourceKey.FULL_FILTER_KEY)
             };
             _comboFilterItems.Add((itemAllFilter, new RowFilter()));
             _comboFilterItems.Add((itemLowFilter, new LowDiscountFilter()));
@@ -89,24 +90,9 @@ namespace AutoServiceClient.ru.kso.autoservice.page.rootpage
         {
             ComboBoxItem itemPrice = new ComboBoxItem
             {
-                Content = "По цене",
+                Content = _resourceLoader.GetString(ResourceKey.PRICE_FILTER_KEY)
             };
             _comboSortItems.Add((itemPrice, new ServicePriceSorting()));
-        }
-
-
-        private void CreateUserItems()
-        {
-            ComboBoxItem itemClient = new ComboBoxItem
-            {
-                Content = "Клиент"
-            };
-            ComboBoxItem itemManager = new ComboBoxItem
-            {
-                Content = "Управляющий"
-            };
-            _comboUserTypeItems.Add((itemClient, typeof(ServiceListPage)));
-            _comboUserTypeItems.Add((itemManager, typeof(ManagerPage)));
         }
 
         private void SortingComboBoxLoaded(object sender, RoutedEventArgs e)
@@ -122,31 +108,6 @@ namespace AutoServiceClient.ru.kso.autoservice.page.rootpage
         private void SortingComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Sort(_sortingComboBox, _comboSortItems);
-        }
-
-        private void UserTypeComboBoxLoaded(object sender, RoutedEventArgs e)
-        {
-            List<ComboBoxItem> items = new List<ComboBoxItem>();
-            foreach ((ComboBoxItem comboBoxItem, _) in _comboUserTypeItems)
-            {
-                items.Add(comboBoxItem);
-            }
-            _userTypeComboBox.ItemsSource = items;
-            _userTypeComboBox.SelectedItem = items[0];
-        }
-
-        private void UserTypeComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (!(_userTypeComboBox.SelectedItem is ComboBoxItem current))
-            {
-                return;
-            }
-            Type page = _comboUserTypeItems.Find(item => item.comboBoxItem.Equals(current)).page;
-            if (page == null)
-            {
-                return;
-            }
-            _contentFrame.Navigate(page);
         }
 
         private void SearchLineTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
@@ -209,9 +170,9 @@ namespace AutoServiceClient.ru.kso.autoservice.page.rootpage
         private void BtnPreviousPageClick(object sender, RoutedEventArgs e)
         {
             _serviceCollection.FetchPreviousPage();
-            string pageTextData = string.Format("Страница {0} из {1}", _serviceCollection.CurrentPage, _pageCount);
+            string pageTextData = string.Format(_resourceLoader.GetString(ResourceKey.CURRENT_PAGE_KEY), _serviceCollection.CurrentPage, _pageCount);
             _pageTextBlock.Text = pageTextData;
-            string tupleTextData = string.Format("Показано {0} из {1} услуг", _serviceCollection.Start - 1, _serviceCollection.Size);
+            string tupleTextData = string.Format(_resourceLoader.GetString(ResourceKey.CURRENT_TUPLES_KEY), _serviceCollection.Start - 1, _serviceCollection.Size);
             _tuplesTextBlock.Text = tupleTextData;
             Sort(_sortingComboBox, _comboSortItems);
         }
@@ -219,9 +180,9 @@ namespace AutoServiceClient.ru.kso.autoservice.page.rootpage
         private void BtnNextPageClick(object sender, RoutedEventArgs e)
         {
             _serviceCollection.FetchNextPage();
-            string pageTextData = string.Format("Страница {0} из {1}", _serviceCollection.CurrentPage, _pageCount);
+            string pageTextData = string.Format(_resourceLoader.GetString(ResourceKey.CURRENT_PAGE_KEY), _serviceCollection.CurrentPage, _pageCount);
             _pageTextBlock.Text = pageTextData;
-            string tupleTextData = string.Format("Показано {0} из {1} услуг", _serviceCollection.Start - 1, _serviceCollection.Size);
+            string tupleTextData = string.Format(_resourceLoader.GetString(ResourceKey.CURRENT_TUPLES_KEY), _serviceCollection.Start - 1, _serviceCollection.Size);
             _tuplesTextBlock.Text = tupleTextData;
             Sort(_sortingComboBox, _comboSortItems);
         }
@@ -230,6 +191,11 @@ namespace AutoServiceClient.ru.kso.autoservice.page.rootpage
         private void BtnInverseLoaded(object sender, RoutedEventArgs e)
         {
             _btnInverse.Click += Reverse;
+        }
+
+        private void ContentFrameLoaded(object sender, RoutedEventArgs e)
+        {
+            _contentFrame.Navigate(typeof(ServiceListPage));
         }
     }
 }

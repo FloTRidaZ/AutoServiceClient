@@ -17,6 +17,12 @@
             ItemClick="ServicesGridViewItemClick"
             IsItemClickEnabled="True"
             Padding="20, 20, 20, 20">
+            <GridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsWrapGrid
+                        Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="datatype:Service">
                     <StackPanel Width="180" Height="160">
