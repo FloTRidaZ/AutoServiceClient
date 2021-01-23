@@ -156,7 +156,13 @@
   <data name="PriceFilter" xml:space="preserve">
     <value>По цене</value>
   </data>
+  <data name="ReviewTuples" xml:space="preserve">
+    <value>Просмотрено {0} услуг</value>
+  </data>
   <data name="SmallFilter" xml:space="preserve">
     <value>От 5 до 15%</value>
+  </data>
+  <data name="Tuples" xml:space="preserve">
+    <value>Всего {0} услуг</value>
   </data>
 </root>

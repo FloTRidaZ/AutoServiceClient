@@ -8,88 +8,13 @@ namespace AutoServiceClient.ru.kso.autoservice.database.collection
     {
         private static ServiceCollection _instance;
         private const int COUNT = 40;
-        private ObservableCollection<Service> _filterableServices;
-        private ObservableCollection<Service> _rowServices;
         private int _start;
-        private int _currentPage;
-        private float _pageCount;
-        private int _size;
-        private int _showedServices;
-
-        public int ShowedServices
-        {
-            get
-            {
-                return _showedServices;
-            }
-
-            private set
-            {
-                _showedServices = value;
-            }
-        }
-
-        public int CurrentPage
-        {
-            get
-            {
-                return _currentPage;
-            }
-
-            private set
-            {
-                _currentPage = value;
-            }
-        }
-
-        public float PageCount
-        {
-            get
-            {
-                return _pageCount;
-            }
-            
-            private set
-            {
-                _pageCount = value;
-            }
-        }
-        public int Size
-        {
-            get
-            {
-                return _size;
-            }
-
-            private set
-            {
-                _size = value;
-            }
-        }
-        public ObservableCollection<Service> FilterableServices
-        {
-            get
-            {
-                return _filterableServices;
-            }
-
-            private set
-            {
-                _filterableServices = value;
-            }
-        }
-        public ObservableCollection<Service> RowServices
-        {
-            get
-            {
-                return _rowServices;
-            }
-
-            private set
-            {
-                _rowServices = value;
-            }
-        }
+        public int ShowedServices { get; private set; }
+        public int CurrentPage { get; private set; }
+        public float PageCount { get; private set; }
+        public int Size { get; private set; }
+        public ObservableCollection<Service> FilterableServices { get; private set; }
+        public ObservableCollection<Service> RowServices { get; private set; }
         public bool IsLastPage
         {
             get

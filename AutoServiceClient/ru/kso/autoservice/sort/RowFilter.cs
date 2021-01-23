@@ -1,22 +1,19 @@
 ﻿using AutoServiceClient.ru.kso.autoservice.database.datatype;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace AutoServiceClient.ru.kso.autoservice.sort
 {
-    public sealed class RowFilter : IServiceSorting
+    public sealed class RowFilter : AServiceFilter
     {
-        public void Reverse()
+        public override void Filter()
         {
-
-        }
-
-        public void Sort()
-        {
-
+            ObservableCollection<Service> filterableCollection = serviceCollection.FilterableServices;
+            ObservableCollection<Service> rowCollection = serviceCollection.RowServices;
+            filterableCollection.Clear();
+            foreach (Service service in rowCollection)
+            {
+                filterableCollection.Add(service);
+            }
         }
     }
 }

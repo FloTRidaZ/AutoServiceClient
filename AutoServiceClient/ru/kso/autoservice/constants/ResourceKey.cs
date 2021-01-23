@@ -22,6 +22,9 @@ namespace AutoServiceClient.ru.kso.autoservice.constants
         public const string CURRENT_PAGE_KEY = "CurrentPage";
         public const string DISCOUNT_KEY = "Discount";
         public const string NULL_DISCOUNT_KEY = "NullDiscount";
+        public const string TUPLES_KEY = "Tuples";
+        public const string REVIEW_TUPLES_KEY = "ReviewTuples";
+
         private ResourceKey()
         {
 

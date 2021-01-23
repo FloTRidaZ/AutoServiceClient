@@ -1,29 +1,22 @@
-﻿using AutoServiceClient.ru.kso.autoservice.database.collection;
-using AutoServiceClient.ru.kso.autoservice.database.datatype;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoServiceClient.ru.kso.autoservice.database.datatype;
+using System.Collections.ObjectModel;
 
 namespace AutoServiceClient.ru.kso.autoservice.sort
 {
-    public sealed class LowDiscountFilter : IServiceSorting
+    public sealed class LowDiscountFilter : AServiceFilter
     {
-        private readonly ServiceCollection _collection;
-
-        public LowDiscountFilter()
+        public override void Filter()
         {
-            _collection = ServiceCollection.GetInstance();
-        }
-
-        public void Reverse()
-        {
-        }
-
-        public void Sort()
-        {
-
+            ObservableCollection<Service> filterableCollection = serviceCollection.FilterableServices;
+            ObservableCollection<Service> rowCollection = serviceCollection.RowServices;
+            filterableCollection.Clear();
+            foreach (Service service in rowCollection)
+            {
+                if (service.Discount >= 0 && service.Discount <= 0.05)
+                {
+                    filterableCollection.Add(service);
+                }
+            }
         }
     }
 }

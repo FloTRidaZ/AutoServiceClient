@@ -108,11 +108,17 @@
                 <Image
                     Source="ms-appx:///Assets/icons/ic_btn_next_page.png"/>
             </Button>
-            <TextBlock
-                x:Name="_tuplesTextBlock"
-                RelativePanel.AlignRightWithPanel="True"
+            <StackPanel
                 RelativePanel.AlignVerticalCenterWithPanel="True"
-                Margin="0, 0, 20, 0"/>
+                RelativePanel.AlignRightWithPanel="True"
+                Margin="0, 0, 20, 0">
+                <TextBlock
+                    x:Name="_currentPageTuplesTextBlock"/>
+                <TextBlock
+                    x:Name="_reviewTextBlock"/>
+                <TextBlock
+                    x:Name="_tuplesTextBlock"/>
+            </StackPanel>
         </RelativePanel>
     </Grid>
 </Page>

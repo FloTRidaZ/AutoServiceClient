@@ -1,55 +1,55 @@
-﻿using AutoServiceClient.ru.kso.autoservice.database.collection;
-using AutoServiceClient.ru.kso.autoservice.database.datatype;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoServiceClient.ru.kso.autoservice.database.datatype;
+using System.Collections.ObjectModel;
 
 namespace AutoServiceClient.ru.kso.autoservice.sort
 {
-    public sealed class ServicePriceSorting : IServiceSorting
+    public sealed class ServicePriceSorting : AServiceSorting
     {
-        private readonly ServiceCollection _collection;
 
-        public ServicePriceSorting()
+        public override void Sort()
         {
-            _collection = ServiceCollection.GetInstance();
+            Sort(serviceCollection.RowServices);
+            Sort(serviceCollection.FilterableServices);
         }
 
-        public void Sort()
+        private void Sort(ObservableCollection<Service> collection)
         {
-            for (int outIndex = _collection.FilterableServices.Count - 1; outIndex >= 1; outIndex--)
+            for (int outIndex = collection.Count - 1; outIndex >= 1; outIndex--)
             {
                 for (int index = 0; index < outIndex; index++)
                 {
-                    Service current = _collection.FilterableServices[index];
-                    Service next = _collection.FilterableServices[index + 1];
+                    Service current = collection[index];
+                    Service next = collection[index + 1];
                     if (current.DiscountCost > next.DiscountCost)
                     {
-                        _collection.FilterableServices[index] = next;
-                        _collection.FilterableServices[index + 1] = current;
+                        collection[index] = next;
+                        collection[index + 1] = current;
                     }
                 }
             }
         }
 
-        public void Reverse()
+        public override void Reverse()
         {
-            for (int outIndex = _collection.FilterableServices.Count - 1; outIndex >= 1; outIndex--)
+            Reverse(serviceCollection.FilterableServices);
+            Reverse(serviceCollection.RowServices);
+        }
+
+        private static void Reverse(ObservableCollection<Service> collection)
+        {
+            for (int outIndex = collection.Count - 1; outIndex >= 1; outIndex--)
             {
                 for (int index = 0; index < outIndex; index++)
                 {
-                    Service current = _collection.FilterableServices[index];
-                    Service next = _collection.FilterableServices[index + 1];
+                    Service current = collection[index];
+                    Service next = collection[index + 1];
                     if (current.DiscountCost < next.DiscountCost)
                     {
-                        _collection.FilterableServices[index] = next;
-                        _collection.FilterableServices[index + 1] = current;
+                        collection[index] = next;
+                        collection[index + 1] = current;
                     }
                 }
             }
         }
-
     }
 }

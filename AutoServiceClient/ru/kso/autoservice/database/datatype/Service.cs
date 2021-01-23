@@ -7,39 +7,12 @@ namespace AutoServiceClient.ru.kso.autoservice.database.datatype
 {
     public sealed class Service
     {
-        private int _id;
-        private string _title;
         private int _cost;
-        private float _duration;
         private float _discount;
-        private float _discountCost;
-        private BitmapImage _bitmap;
 
-        public int Id
-        {
-            get
-            {
-                return _id;
-            }
+        public int Id { get; set; }
 
-            set
-            {
-                _id = value;
-            }
-        }
-
-        public string Title
-        {
-            get
-            {
-                return _title;
-            }
-
-            set
-            {
-                _title = value;
-            }
-        }
+        public string Title { get; set; }
 
         public int Cost
         {
@@ -55,18 +28,7 @@ namespace AutoServiceClient.ru.kso.autoservice.database.datatype
             }
         }
 
-        public float Duration
-        {
-            get
-            {
-                return _duration;
-            }
-
-            set
-            {
-                _duration = value;
-            }
-        }
+        public float Duration { get; set; }
 
         public float Discount
         {
@@ -83,31 +45,9 @@ namespace AutoServiceClient.ru.kso.autoservice.database.datatype
             }
         }
 
-        public float DiscountCost
-        {
-            get
-            {
-                return _discountCost;
-            }
+        public float DiscountCost { get; private set; }
 
-            private set
-            {
-                _discountCost = value;
-            }
-        }
-
-        public BitmapImage Bitmap
-        {
-            get
-            {
-                return _bitmap;
-            }
-
-            set
-            {
-                _bitmap = value;
-            }
-        }
+        public BitmapImage Bitmap { get; set; }
 
         public Service(int id, string title, int cost, float duration)
         {
@@ -128,7 +68,7 @@ namespace AutoServiceClient.ru.kso.autoservice.database.datatype
 
         private void SetDiscountCost()
         {
-            _discountCost = _cost - _cost * _discount;
+            DiscountCost = _cost - _cost * _discount;
         }
     }
 }

@@ -126,7 +126,6 @@
     <Compile Include="ru\kso\autoservice\database\connector\DBConnection.cs" />
     <Compile Include="ru\kso\autoservice\database\connector\DBConnector.cs" />
     <Compile Include="ru\kso\autoservice\database\connector\DBQuery.cs" />
-    <Compile Include="ru\kso\autoservice\database\datatype\Client.cs" />
     <Compile Include="ru\kso\autoservice\database\datatype\Service.cs" />
     <Compile Include="ru\kso\autoservice\page\managerpage\ManagerPage.xaml.cs">
       <DependentUpon>ManagerPage.xaml</DependentUpon>
@@ -145,9 +144,9 @@
     </Compile>
     <Compile Include="ru\kso\autoservice\sort\FullyDiscountFilter.cs" />
     <Compile Include="ru\kso\autoservice\sort\HightDiscountFilter.cs" />
+    <Compile Include="ru\kso\autoservice\sort\AServiceFilter.cs" />
     <Compile Include="ru\kso\autoservice\sort\LowDiscountFilter.cs" />
-    <Compile Include="ru\kso\autoservice\sort\IClientSorting.cs" />
-    <Compile Include="ru\kso\autoservice\sort\IServiceSorting.cs" />
+    <Compile Include="ru\kso\autoservice\sort\AServiceSorting.cs" />
     <Compile Include="ru\kso\autoservice\sort\MediumDiscountFilter.cs" />
     <Compile Include="ru\kso\autoservice\sort\RowFilter.cs" />
     <Compile Include="ru\kso\autoservice\sort\ServicePriceSorting.cs" />
