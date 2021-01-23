@@ -3,7 +3,6 @@ using AutoServiceClient.ru.kso.autoservice.database.collection;
 using AutoServiceClient.ru.kso.autoservice.database.datatype;
 using AutoServiceClient.ru.kso.autoservice.page.servicelistpage;
 using AutoServiceClient.ru.kso.autoservice.sort;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Windows.ApplicationModel.Resources;
@@ -12,9 +11,6 @@ using Windows.UI.Xaml.Controls;
 
 namespace AutoServiceClient.ru.kso.autoservice.page.rootpage
 {
-    /// <summary>
-    /// Пустая страница, которую можно использовать саму по себе или для перехода внутри фрейма.
-    /// </summary>
     public sealed partial class RootPage : Page
     {
         private readonly List<(ComboBoxItem comboBoxItem, AServiceSorting sorting)> _comboSortItems;

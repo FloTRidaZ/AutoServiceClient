@@ -1,19 +1,13 @@
 ﻿using AutoServiceClient.ru.kso.autoservice.constants;
 using AutoServiceClient.ru.kso.autoservice.database.collection;
 using AutoServiceClient.ru.kso.autoservice.database.datatype;
-using System;
 using System.Collections.ObjectModel;
 using Windows.ApplicationModel.Resources;
 using Windows.UI.Text;
 using Windows.UI.Xaml.Controls;
 
-// Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace AutoServiceClient.ru.kso.autoservice.page.servicelistpage
 {
-    /// <summary>
-    /// Пустая страница, которую можно использовать саму по себе или для перехода внутри фрейма.
-    /// </summary>
     public sealed partial class ServiceListPage : Page
     {
         private readonly ObservableCollection<Service> _services;

@@ -1,5 +1,4 @@
-﻿using AutoServiceClient.ru.kso.autoservice.database.collection;
-using AutoServiceClient.ru.kso.autoservice.database.datatype;
+﻿using AutoServiceClient.ru.kso.autoservice.database.datatype;
 using System.Collections.ObjectModel;
 using System.Data.SqlClient;
 using System.IO;
