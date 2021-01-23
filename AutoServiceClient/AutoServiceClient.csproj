@@ -127,20 +127,11 @@
     <Compile Include="ru\kso\autoservice\database\connector\DBConnector.cs" />
     <Compile Include="ru\kso\autoservice\database\connector\DBQuery.cs" />
     <Compile Include="ru\kso\autoservice\database\datatype\Service.cs" />
-    <Compile Include="ru\kso\autoservice\page\managerpage\ManagerPage.xaml.cs">
-      <DependentUpon>ManagerPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ru\kso\autoservice\page\orderpage\OrderPage.xaml.cs">
-      <DependentUpon>OrderPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ru\kso\autoservice\page\rootpage\RootPage.xaml.cs">
       <DependentUpon>RootPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ru\kso\autoservice\page\servicelistpage\ServiceListPage.xaml.cs">
       <DependentUpon>ServiceListPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ru\kso\autoservice\page\servicepage\ServicePage.xaml.cs">
-      <DependentUpon>ServicePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ru\kso\autoservice\sort\FullyDiscountFilter.cs" />
     <Compile Include="ru\kso\autoservice\sort\HightDiscountFilter.cs" />
@@ -185,23 +176,11 @@
     <PRIResource Include="Strings\ru-RU\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="ru\kso\autoservice\page\managerpage\ManagerPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ru\kso\autoservice\page\orderpage\OrderPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="ru\kso\autoservice\page\rootpage\RootPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ru\kso\autoservice\page\servicelistpage\ServiceListPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ru\kso\autoservice\page\servicepage\ServicePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
