@@ -46,20 +46,20 @@
                 PlaceholderText="Выберите сортировку">
             </ComboBox>
             <Button
-                x:Name="_btnInverse"
+                x:Name="_btnReverse"
                 RelativePanel.RightOf="_sortingComboBox"
                 RelativePanel.AlignBottomWith="_sortingComboBox"
                 Width="40"
                 Height="40"
                 Background="White"
-                Loaded="BtnInverseLoaded">
+                Click="BtnReverseClick">
                 <Image 
                     Source="ms-appx:///Assets/icons/ic_sorting_inversion.png"/>
             </Button>
             <ComboBox
                 x:Name="_filterComboBox"
                 RelativePanel.AlignBottomWith="_sortingComboBox"
-                RelativePanel.RightOf="_btnInverse"
+                RelativePanel.RightOf="_btnReverse"
                 Header="Фильтры"
                 Margin="20, 0, 0, 0"
                 Width="200"

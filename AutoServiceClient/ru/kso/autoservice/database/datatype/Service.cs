@@ -1,23 +1,113 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Storage.Streams;
-using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace AutoServiceClient.ru.kso.autoservice.database.datatype
 {
     public sealed class Service
     {
-        public int Id { get; set; }
-        public string Title { get; set; }
-        public int Cost { get; set; }
-        public float Duration { get; set; }
-        public float Discount { get; set; }
-        public BitmapImage Bitmap { get; set; }
+        private int _id;
+        private string _title;
+        private int _cost;
+        private float _duration;
+        private float _discount;
+        private float _discountCost;
+        private BitmapImage _bitmap;
+
+        public int Id
+        {
+            get
+            {
+                return _id;
+            }
+
+            set
+            {
+                _id = value;
+            }
+        }
+
+        public string Title
+        {
+            get
+            {
+                return _title;
+            }
+
+            set
+            {
+                _title = value;
+            }
+        }
+
+        public int Cost
+        {
+            get
+            {
+                return _cost;
+            }
+
+            set
+            {
+                _cost = value;
+                SetDiscountCost();
+            }
+        }
+
+        public float Duration
+        {
+            get
+            {
+                return _duration;
+            }
+
+            set
+            {
+                _duration = value;
+            }
+        }
+
+        public float Discount
+        {
+
+            get
+            {
+                return _discount;
+            }
+
+            set
+            {
+                _discount = value;
+                SetDiscountCost();
+            }
+        }
+
+        public float DiscountCost
+        {
+            get
+            {
+                return _discountCost;
+            }
+
+            private set
+            {
+                _discountCost = value;
+            }
+        }
+
+        public BitmapImage Bitmap
+        {
+            get
+            {
+                return _bitmap;
+            }
+
+            set
+            {
+                _bitmap = value;
+            }
+        }
 
         public Service(int id, string title, int cost, float duration)
         {
@@ -25,6 +115,8 @@ namespace AutoServiceClient.ru.kso.autoservice.database.datatype
             Title = title;
             Cost = cost;
             Duration = duration;
+            Discount = 0;
+            DiscountCost = Cost - Cost * Discount;
             Bitmap = new BitmapImage();
         }
 
@@ -32,6 +124,11 @@ namespace AutoServiceClient.ru.kso.autoservice.database.datatype
         {
             IRandomAccessStream thread = WindowsRuntimeStreamExtensions.AsRandomAccessStream(stream);
             await Bitmap.SetSourceAsync(thread);
+        }
+
+        private void SetDiscountCost()
+        {
+            _discountCost = _cost - _cost * _discount;
         }
     }
 }

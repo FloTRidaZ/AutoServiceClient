@@ -1,4 +1,5 @@
-﻿using AutoServiceClient.ru.kso.autoservice.database.datatype;
+﻿using AutoServiceClient.ru.kso.autoservice.database.collection;
+using AutoServiceClient.ru.kso.autoservice.database.datatype;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,20 @@ namespace AutoServiceClient.ru.kso.autoservice.sort
 {
     public sealed class LowDiscountFilter : IServiceSorting
     {
+        private readonly ServiceCollection _collection;
+
+        public LowDiscountFilter()
+        {
+            _collection = ServiceCollection.GetInstance();
+        }
+
         public void Reverse()
         {
         }
 
         public void Sort()
         {
+
         }
     }
 }

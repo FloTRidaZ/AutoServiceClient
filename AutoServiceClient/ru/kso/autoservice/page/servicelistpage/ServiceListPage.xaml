@@ -14,19 +14,22 @@
             x:Name="_servicesGridView"
             ItemsSource="{x:Bind _services}"
             SelectionMode="None"
-            ItemClick="ServicesGridViewItemClick"
-            IsItemClickEnabled="True"
+            IsItemClickEnabled="False"
             Padding="20, 20, 20, 20"
             ContainerContentChanging="ServicesGridViewContainerContentChanging">
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <ItemsWrapGrid
+                        Margin="0, 0, 0, 0"
                         Orientation="Horizontal"/>
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="datatype:Service">
-                    <StackPanel Width="180" Height="180">
+                    <StackPanel
+                        Width="200"
+                        Height="200"
+                        Padding="5, 5, 5, 5">
                         <Image
                             x:Name="_servicePhoto"
                             Width="100"
@@ -37,11 +40,20 @@
                             MaxLines="1"
                             TextTrimming="CharacterEllipsis"
                             Text="{x:Bind Title}"/>
-                        <TextBlock
-                            x:Name="_costTextBlock"
-                            MaxLines="1"
-                            TextTrimming="CharacterEllipsis"
-                            Opacity="0"/>
+                        <RelativePanel
+                            Opacity="0">
+                            <TextBlock
+                                RelativePanel.AlignLeftWithPanel="True"
+                                x:Name="_costTextBlock"
+                                MaxLines="1"
+                                TextTrimming="CharacterEllipsis"/>
+                            <TextBlock
+                                RelativePanel.RightOf="_costTextBlock"
+                                x:Name="_newCostTextBlock"
+                                MaxLines="1"
+                                TextTrimming="CharacterEllipsis"
+                                Margin="5, 0, 0, 0"/>
+                        </RelativePanel>
                         <TextBlock
                             x:Name="_durationTextBlock"
                             MaxLines="1"

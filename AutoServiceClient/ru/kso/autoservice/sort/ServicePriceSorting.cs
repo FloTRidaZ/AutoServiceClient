@@ -19,16 +19,16 @@ namespace AutoServiceClient.ru.kso.autoservice.sort
 
         public void Sort()
         {
-            for (int outIndex = _collection.Services.Count - 1; outIndex >= 1; outIndex--)
+            for (int outIndex = _collection.FilterableServices.Count - 1; outIndex >= 1; outIndex--)
             {
                 for (int index = 0; index < outIndex; index++)
                 {
-                    Service current = _collection.Services[index];
-                    Service next = _collection.Services[index + 1];
-                    if (current.Cost > next.Cost)
+                    Service current = _collection.FilterableServices[index];
+                    Service next = _collection.FilterableServices[index + 1];
+                    if (current.DiscountCost > next.DiscountCost)
                     {
-                        _collection.Services[index] = next;
-                        _collection.Services[index + 1] = current;
+                        _collection.FilterableServices[index] = next;
+                        _collection.FilterableServices[index + 1] = current;
                     }
                 }
             }
@@ -36,16 +36,16 @@ namespace AutoServiceClient.ru.kso.autoservice.sort
 
         public void Reverse()
         {
-            for (int outIndex = _collection.Services.Count - 1; outIndex >= 1; outIndex--)
+            for (int outIndex = _collection.FilterableServices.Count - 1; outIndex >= 1; outIndex--)
             {
                 for (int index = 0; index < outIndex; index++)
                 {
-                    Service current = _collection.Services[index];
-                    Service next = _collection.Services[index + 1];
-                    if (current.Cost < next.Cost)
+                    Service current = _collection.FilterableServices[index];
+                    Service next = _collection.FilterableServices[index + 1];
+                    if (current.DiscountCost < next.DiscountCost)
                     {
-                        _collection.Services[index] = next;
-                        _collection.Services[index + 1] = current;
+                        _collection.FilterableServices[index] = next;
+                        _collection.FilterableServices[index + 1] = current;
                     }
                 }
             }

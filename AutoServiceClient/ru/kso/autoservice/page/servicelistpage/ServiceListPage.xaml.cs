@@ -1,6 +1,7 @@
 ﻿using AutoServiceClient.ru.kso.autoservice.constants;
 using AutoServiceClient.ru.kso.autoservice.database.collection;
 using AutoServiceClient.ru.kso.autoservice.database.datatype;
+using System;
 using System.Collections.ObjectModel;
 using Windows.ApplicationModel.Resources;
 using Windows.UI.Text;
@@ -23,13 +24,8 @@ namespace AutoServiceClient.ru.kso.autoservice.page.servicelistpage
         {
             this.InitializeComponent();
             _serviceCollection = ServiceCollection.GetInstance();
-            _services = _serviceCollection.Services;
+            _services = _serviceCollection.FilterableServices;
             _resourceLoader = ResourceLoader.GetForCurrentView();
-        }
-
-        private void ServicesGridViewItemClick(object sender, ItemClickEventArgs e)
-        {
-
         }
 
         private void ServicesGridViewContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
@@ -48,10 +44,12 @@ namespace AutoServiceClient.ru.kso.autoservice.page.servicelistpage
                 return;
             }
             StackPanel root = args.ItemContainer.ContentTemplateRoot as StackPanel;
-            TextBlock costTextBlock = root.Children[2] as TextBlock;
+            RelativePanel costPanel = root.Children[2] as RelativePanel;
+            TextBlock costTextBlock = costPanel.Children[0] as TextBlock;
+            costTextBlock.TextDecorations = TextDecorations.None;
             Service service = args.Item as Service;
             costTextBlock.Text = string.Format(_resourceLoader.GetString(ResourceKey.PRICE_KEY), service.Cost);
-            costTextBlock.Opacity = 1;
+            costPanel.Opacity = 1;
             args.RegisterUpdateCallback(ShowDuration);
         }
 
@@ -76,19 +74,21 @@ namespace AutoServiceClient.ru.kso.autoservice.page.servicelistpage
                 return;
             }
             StackPanel root = args.ItemContainer.ContentTemplateRoot as StackPanel;
-            TextBlock costTextBlock = root.Children[2] as TextBlock;
+            RelativePanel costPanel = root.Children[2] as RelativePanel;
             TextBlock discountTextBlock = root.Children[4] as TextBlock;
+            discountTextBlock.Opacity = 1;
             Service service = args.Item as Service;
-            string discount;
+            TextBlock newCostTextBlock = costPanel.Children[1] as TextBlock;
+            TextBlock costTextBlock = costPanel.Children[0] as TextBlock;
             if (service.Discount == 0)
             {
-                discount = _resourceLoader.GetString(ResourceKey.NULL_DISCOUNT_KEY);
-            } else
-            {
-                discount = string.Format(_resourceLoader.GetString(ResourceKey.DISCOUNT_KEY), service.Discount * 100);
+                discountTextBlock.Text = _resourceLoader.GetString(ResourceKey.NULL_DISCOUNT_KEY);
+                costTextBlock.TextDecorations = TextDecorations.None;
+                newCostTextBlock.Text = "";
+                return;
             }
-            discountTextBlock.Text = discount;
-            discountTextBlock.Opacity = 1;
+            discountTextBlock.Text = string.Format(_resourceLoader.GetString(ResourceKey.DISCOUNT_KEY), service.Discount * 100);
+            newCostTextBlock.Text = string.Format(_resourceLoader.GetString(ResourceKey.DISCOUNT_PRICE_KEY), service.DiscountCost);
             costTextBlock.TextDecorations = TextDecorations.Strikethrough;
         }
     }

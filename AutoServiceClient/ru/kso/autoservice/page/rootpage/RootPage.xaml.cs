@@ -1,9 +1,7 @@
 ﻿using AutoServiceClient.ru.kso.autoservice.constants;
 using AutoServiceClient.ru.kso.autoservice.database.collection;
-using AutoServiceClient.ru.kso.autoservice.page.managerpage;
 using AutoServiceClient.ru.kso.autoservice.page.servicelistpage;
 using AutoServiceClient.ru.kso.autoservice.sort;
-using System;
 using System.Collections.Generic;
 using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml;
@@ -21,8 +19,8 @@ namespace AutoServiceClient.ru.kso.autoservice.page.rootpage
         private readonly List<(ComboBoxItem comboBoxItem, IServiceSorting sorting)> _comboSortItems;
         private readonly List<(ComboBoxItem comboBoxItem, IServiceSorting sorting)> _comboFilterItems;
         private readonly ServiceCollection _serviceCollection;
-        private readonly double _pageCount;
         private readonly ResourceLoader _resourceLoader;
+        private bool _isReverseSort;
 
         public RootPage()
         {
@@ -32,17 +30,17 @@ namespace AutoServiceClient.ru.kso.autoservice.page.rootpage
             _comboFilterItems = new List<(ComboBoxItem comboBoxItem, IServiceSorting sorting)>();
             _serviceCollection = ServiceCollection.GetInstance();
             _serviceCollection.FetchNextPage();
+            _isReverseSort = false;
             CreateComboBoxItems();
-            _pageCount = _serviceCollection.PageCount;
-            double mod = _pageCount % 1;
-            if (mod != 0)
-            {
-                _pageCount++;
-                _pageCount -= mod;
-            }
-            string pageTextData = string.Format(_resourceLoader.GetString(ResourceKey.CURRENT_PAGE_KEY), _serviceCollection.CurrentPage, _pageCount);
+            SetPageData();
+        }
+
+        private void SetPageData()
+        {
+            double pageCount = _serviceCollection.PageCount;
+            string pageTextData = string.Format(_resourceLoader.GetString(ResourceKey.CURRENT_PAGE_KEY), _serviceCollection.CurrentPage, pageCount);
             _pageTextBlock.Text = pageTextData;
-            string tupleTextData = string.Format(_resourceLoader.GetString(ResourceKey.CURRENT_TUPLES_KEY), _serviceCollection.Start - 1, _serviceCollection.Size);
+            string tupleTextData = string.Format(_resourceLoader.GetString(ResourceKey.CURRENT_TUPLES_KEY), _serviceCollection.ShowedServices, _serviceCollection.Size);
             _tuplesTextBlock.Text = tupleTextData;
         }
 
@@ -144,7 +142,24 @@ namespace AutoServiceClient.ru.kso.autoservice.page.rootpage
             sorting.Sort();
         }
 
-        private void Reverse(object sender, RoutedEventArgs e)
+        private void BtnPreviousPageClick(object sender, RoutedEventArgs e)
+        {
+            _serviceCollection.FetchPreviousPage();
+            SetPageData();
+        }
+
+        private void BtnNextPageClick(object sender, RoutedEventArgs e)
+        {
+            _serviceCollection.FetchNextPage();
+            SetPageData();
+        }
+
+        private void ContentFrameLoaded(object sender, RoutedEventArgs e)
+        {
+            _contentFrame.Navigate(typeof(ServiceListPage));
+        }
+
+        private void BtnReverseClick(object sender, RoutedEventArgs e)
         {
             if (!(_sortingComboBox.SelectedItem is ComboBoxItem current))
             {
@@ -155,47 +170,14 @@ namespace AutoServiceClient.ru.kso.autoservice.page.rootpage
             {
                 return;
             }
-            sorting.Reverse();
-            _btnInverse.Click += Resort;
-            _btnInverse.Click -= Reverse;
-        }
-
-        private void Resort(object sender, RoutedEventArgs e)
-        {
-            Sort(_sortingComboBox, _comboSortItems);
-            _btnInverse.Click += Reverse;
-            _btnInverse.Click -= Resort;
-        }
-
-        private void BtnPreviousPageClick(object sender, RoutedEventArgs e)
-        {
-            _serviceCollection.FetchPreviousPage();
-            string pageTextData = string.Format(_resourceLoader.GetString(ResourceKey.CURRENT_PAGE_KEY), _serviceCollection.CurrentPage, _pageCount);
-            _pageTextBlock.Text = pageTextData;
-            string tupleTextData = string.Format(_resourceLoader.GetString(ResourceKey.CURRENT_TUPLES_KEY), _serviceCollection.Start - 1, _serviceCollection.Size);
-            _tuplesTextBlock.Text = tupleTextData;
-            Sort(_sortingComboBox, _comboSortItems);
-        }
-
-        private void BtnNextPageClick(object sender, RoutedEventArgs e)
-        {
-            _serviceCollection.FetchNextPage();
-            string pageTextData = string.Format(_resourceLoader.GetString(ResourceKey.CURRENT_PAGE_KEY), _serviceCollection.CurrentPage, _pageCount);
-            _pageTextBlock.Text = pageTextData;
-            string tupleTextData = string.Format(_resourceLoader.GetString(ResourceKey.CURRENT_TUPLES_KEY), _serviceCollection.Start - 1, _serviceCollection.Size);
-            _tuplesTextBlock.Text = tupleTextData;
-            Sort(_sortingComboBox, _comboSortItems);
-        }
-
-
-        private void BtnInverseLoaded(object sender, RoutedEventArgs e)
-        {
-            _btnInverse.Click += Reverse;
-        }
-
-        private void ContentFrameLoaded(object sender, RoutedEventArgs e)
-        {
-            _contentFrame.Navigate(typeof(ServiceListPage));
+            if (!_isReverseSort)
+            {
+                sorting.Reverse();
+                _isReverseSort = !_isReverseSort;
+                return;
+            }
+            sorting.Sort();
+            _isReverseSort = !_isReverseSort;
         }
     }
 }

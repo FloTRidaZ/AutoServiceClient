@@ -129,6 +129,9 @@
   <data name="Discount" xml:space="preserve">
     <value>Скидка: {0} %</value>
   </data>
+  <data name="DiscountPrice" xml:space="preserve">
+    <value>{0} руб</value>
+  </data>
   <data name="Duration" xml:space="preserve">
     <value>Продолжительность: {0} ч.</value>
   </data>
